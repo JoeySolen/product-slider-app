@@ -1,5 +1,10 @@
 @import "tailwindcss";
 @import 'swiper/css';
+@tailwind utilities;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Importaciones necesarias para Swiper */
 @import 'swiper/css';
@@ -70,19 +75,45 @@ transition-timing-function: linear !important;
 z-index: 9999;
 }
 
-/* Añadir animación al abrir/cerrar vista previa */
-@keyframes fadeIn {
-from { opacity: 0; }
-to { opacity: 1; }
-}
-
-@keyframes slideIn {
-from { transform: translateY(20px); opacity: 0; }
-to { transform: translateY(0); opacity: 1; }
-}
-
-.fixed.inset-0 {
+/* Mejorar el backdrop del modal */
+.modal-backdrop {
 animation: fadeIn 0.3s ease-out;
+backdrop-filter: blur(8px);
+-webkit-backdrop-filter: blur(8px); /* Para Safari */
+}
+
+/* Estilos para modales */
+@keyframes modal-appear {
+from { 
+    opacity: 0;
+    transform: scale(0.95);
+}
+to { 
+    opacity: 1;
+    transform: scale(1);
+}
+}
+
+/* Estilo para el fondo del modal con efecto blur */
+.modal-backdrop {
+background-color: rgba(0, 0, 0, 0.5);
+-webkit-backdrop-filter: blur(5px);
+backdrop-filter: blur(5px);
+transition: all 0.3s ease;
+}
+
+/* Para Safari y navegadores basados en WebKit */
+@supports (-webkit-backdrop-filter: blur(5px)) {
+.modal-backdrop {
+    -webkit-backdrop-filter: blur(5px);
+}
+}
+
+/* Para Firefox que no soporta backdrop-filter */
+@supports not (backdrop-filter: blur(5px)) {
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.75);
+}
 }
 
 .fixed.inset-0 > div {
