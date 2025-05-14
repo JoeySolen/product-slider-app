@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import { ShoppingCart, Heart, Eye } from "@phosphor-icons/react";
+import ProductCard from './ProductCard';
+import { Sliders } from "@phosphor-icons/react";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -92,13 +93,27 @@ const productsData = [
 
 function ProductSlider() {
 const [activeCategory, setActiveCategory] = useState('todos');
-const [autoplayEnabled, setAutoplayEnabled] = useState(false); // Inicialmente desactivado
+const [autoplayEnabled, setAutoplayEnabled] = useState(false);
+const [showPriceFilter, setShowPriceFilter] = useState(false);
 const swiperRef = useRef(null);
 
-// Filtrar productos según la categoría seleccionada
-const filteredProducts = activeCategory === 'todos' 
-    ? productsData 
-    : productsData.filter(product => product.category === activeCategory);
+// Calcular precios mínimo y máximo para el rango del filtro
+const maxPrice = Math.ceil(Math.max(...productsData.map(p => p.price)));
+const minPrice = Math.floor(Math.min(...productsData.map(p => p.price)));
+
+// Estado para el filtro de precio (utilizamos valores de precio real, no porcentajes)
+const [minPriceFilter, setMinPriceFilter] = useState(minPrice);
+const [maxPriceFilter, setMaxPriceFilter] = useState(maxPrice);
+
+// Filtrar productos según la categoría y el rango de precio seleccionados
+const filteredProducts = productsData
+    .filter(product => activeCategory === 'todos' || product.category === activeCategory)
+    .filter(product => {
+    const finalPrice = product.discount > 0 
+        ? product.price * (1 - product.discount / 100) 
+        : product.price;
+    return finalPrice >= minPriceFilter && finalPrice <= maxPriceFilter;
+    });
 
 // Categorías únicas para el filtro
 const categories = ['todos', ...new Set(productsData.map(product => product.category))];
@@ -109,21 +124,31 @@ useEffect(() => {
     if (!swiper) return;
     
     if (autoplayEnabled) {
-    // Iniciar autoplay
     swiper.autoplay.start();
     } else {
-    // Detener autoplay
     swiper.autoplay.stop();
     }
 }, [autoplayEnabled]);
+
+// Manejar cambio en el filtro de precio mínimo
+const handleMinPriceChange = (e) => {
+    const value = Number(e.target.value);
+    setMinPriceFilter(value > maxPriceFilter ? maxPriceFilter : value);
+};
+
+// Manejar cambio en el filtro de precio máximo
+const handleMaxPriceChange = (e) => {
+    const value = Number(e.target.value);
+    setMaxPriceFilter(value < minPriceFilter ? minPriceFilter : value);
+};
 
 return (
     <div className="bg-gray-50 p-6 rounded-md">
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <h2 className="text-2xl font-semibold text-gray-800">Productos Destacados</h2>
         
+        <div className="flex flex-wrap gap-3 mt-4 md:mt-0 items-center">
         {/* Filtro de categorías */}
-        <div className="flex flex-wrap gap-3 mt-4 md:mt-0">
         {categories.map(category => (
             <button
             key={category}
@@ -137,8 +162,65 @@ return (
             {category.charAt(0).toUpperCase() + category.slice(1)}
             </button>
         ))}
+        
+        {/* Botón de filtro de precio */}
+        <button 
+            onClick={() => setShowPriceFilter(!showPriceFilter)}
+            className={`ml-2 p-2 rounded-md transition-colors ${
+            showPriceFilter 
+            ? 'bg-blue-600 text-white' 
+            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+            aria-label="Filtrar por precio"
+        >
+            <Sliders size={20} />
+        </button>
         </div>
     </div>
+
+    {/* Filtro de precio MEJORADO - usando sliders individuales para min y max */}
+    {showPriceFilter && (
+        <div className="mb-6 p-5 bg-white rounded-lg shadow-sm">
+        <div className="mb-4 flex justify-between items-center">
+            <h3 className="font-medium text-gray-700">Filtrar por precio</h3>
+            <div className="flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-md">
+            <span className="text-sm font-medium text-gray-600">${minPriceFilter}</span>
+            <span className="text-sm text-gray-400">-</span>
+            <span className="text-sm font-medium text-gray-600">${maxPriceFilter}</span>
+            </div>
+        </div>
+        
+        {/* Slider para precio mínimo */}
+        <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-600 mb-2">
+            Precio mínimo
+            </label>
+            <input 
+            type="range" 
+            min={minPrice} 
+            max={maxPrice} 
+            value={minPriceFilter}
+            onChange={handleMinPriceChange}
+            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+            />
+        </div>
+        
+        {/* Slider para precio máximo */}
+        <div>
+            <label className="block text-sm font-medium text-gray-600 mb-2">
+            Precio máximo
+            </label>
+            <input 
+            type="range" 
+            min={minPrice} 
+            max={maxPrice} 
+            value={maxPriceFilter}
+            onChange={handleMaxPriceChange}
+            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+            />
+        </div>
+        </div>
+    )}
 
     {/* Opción de autoplay */}
     <div className="mb-4 flex items-center">
@@ -154,8 +236,16 @@ return (
         </label>
     </div>
 
+    {/* Mensaje cuando no hay productos */}
+    {filteredProducts.length === 0 && (
+        <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-md p-4 mb-6">
+        <p className="text-center">No se encontraron productos con los filtros seleccionados.</p>
+        </div>
+    )}
+
     {/* Slider de productos */}
-    <Swiper
+    {filteredProducts.length > 0 && (
+        <Swiper
         ref={swiperRef}
         modules={[Navigation, Pagination, Autoplay]}
         slidesPerView={1}
@@ -163,95 +253,21 @@ return (
         navigation={true}
         pagination={{ clickable: true }}
         autoplay={autoplayEnabled ? { delay: 3000, disableOnInteraction: false } : false}
-        loop={true} // Esto evita problemas cuando se llega al final del slider
+        loop={filteredProducts.length > 1} // Solo activar loop si hay más de un elemento
         breakpoints={{
-        640: { slidesPerView: 2 },
-        768: { slidesPerView: 3 },
-        1024: { slidesPerView: 4 }
+            640: { slidesPerView: 2 },
+            768: { slidesPerView: 3 },
+            1024: { slidesPerView: 4 }
         }}
         className="mySwiper"
-    >
+        >
         {filteredProducts.map((product) => (
-        <SwiperSlide key={product.id}>
-            <div className="bg-white rounded-lg shadow-md overflow-hidden group transition-all duration-300 hover:shadow-lg h-full">
-            <div className="relative">
-                {/* Distintivos para ofertas y productos nuevos */}
-                <div className="absolute top-2 left-2 flex flex-col gap-2 z-10">
-                {product.discount > 0 && (
-                    <span className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
-                    -{product.discount}%
-                    </span>
-                )}
-                {product.isNew && (
-                    <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded">
-                    Nuevo
-                    </span>
-                )}
-                </div>
-                
-                {/* Imagen del producto */}
-                <div className="h-48 overflow-hidden">
-                <img 
-                    src={product.image} 
-                    alt={product.name} 
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
-                    loading="lazy"
-                />
-                </div>
-                
-                {/* Botones de acción rápida */}
-                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="flex gap-2">
-                    <button className="bg-white p-2 rounded-full hover:bg-blue-500 hover:text-white transition-colors">
-                    <ShoppingCart size={18} />
-                    </button>
-                    <button className="bg-white p-2 rounded-full hover:bg-blue-500 hover:text-white transition-colors">
-                    <Heart size={18} />
-                    </button>
-                    <button className="bg-white p-2 rounded-full hover:bg-blue-500 hover:text-white transition-colors">
-                    <Eye size={18} />
-                    </button>
-                </div>
-                </div>
-            </div>
-            
-            {/* Información del producto */}
-            <div className="p-4 flex flex-col h-[calc(100%-12rem)]">
-                <h3 className="text-lg font-semibold text-gray-800 mb-1">{product.name}</h3>
-                <div className="flex items-center">
-                {/* Clasificación con estrellas */}
-                <div className="flex text-yellow-400">
-                    {[...Array(5)].map((_, i) => (
-                    <svg key={i} className={`w-4 h-4 ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                    </svg>
-                    ))}
-                    <span className="text-xs text-gray-500 ml-1">({product.rating})</span>
-                </div>
-                </div>
-                <div className="mt-auto pt-2 flex items-center justify-between">
-                <div className="flex items-center">
-                    {product.discount > 0 ? (
-                    <>
-                        <span className="text-lg font-bold text-gray-900">
-                        ${(product.price * (1 - product.discount / 100)).toFixed(2)}
-                        </span>
-                        <span className="text-sm text-gray-500 line-through ml-2">
-                        ${product.price.toFixed(2)}
-                        </span>
-                    </>
-                    ) : (
-                    <span className="text-lg font-bold text-gray-900">
-                        ${product.price.toFixed(2)}
-                    </span>
-                    )}
-                </div>
-                </div>
-            </div>
-            </div>
-        </SwiperSlide>
+            <SwiperSlide key={product.id}>
+            <ProductCard product={product} />
+            </SwiperSlide>
         ))}
-    </Swiper>
+        </Swiper>
+    )}
     </div>
 );
 }

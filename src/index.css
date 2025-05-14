@@ -8,69 +8,149 @@
 
 /* Estilos personalizados */
 body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background-color: #f9fafb;
+font-family: 'Inter', system-ui, -apple-system, sans-serif;
+background-color: #f9fafb;
 }
 
 .swiper {
-    width: 100%;
-    padding-bottom: 40px !important; /* Espacio para paginación */
+width: 100%;
+padding-bottom: 40px !important; /* Espacio para paginación */
 }
 
 .swiper-button-next,
 .swiper-button-prev {
-    color: #3b82f6 !important;
-    background-color: white;
-    width: 40px !important;
-    height: 40px !important;
-    border-radius: 50%;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    transition: all 0.2s ease;
+color: #3b82f6 !important;
+background-color: white;
+width: 40px !important;
+height: 40px !important;
+border-radius: 50%;
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+transition: all 0.2s ease;
 }
 
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
-    background-color: #3b82f6;
-    color: white !important;
+background-color: #3b82f6;
+color: white !important;
 }
 
 .swiper-button-next:after,
 .swiper-button-prev:after {
-    font-size: 18px !important;
-    font-weight: bold;
+font-size: 18px !important;
+font-weight: bold;
 }
 
 .swiper-pagination-bullet {
-    background-color: #3b82f6 !important;
-    opacity: 0.5;
+background-color: #3b82f6 !important;
+opacity: 0.5;
 }
 
 .swiper-pagination-bullet-active {
-    opacity: 1;
+opacity: 1;
 }
 
+/* Ajustes para evitar problemas de altura en los slides */
 .swiper-slide {
-    height: auto !important;
+height: auto !important;
+display: flex;
 }
 
-/* Asegurar que las tarjetas de productos tengan la misma altura */
 .swiper-slide > div {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+height: 100%;
+width: 100%;
 }
 
-/* Fix para prevenir el salto visual con autoplay */
+/* Solución para el problema de oscilación con autoplay */
 .swiper-wrapper {
-    transition-timing-function: linear !important;
+transition-timing-function: linear !important;
 }
 
-/* Mejorar las animaciones de hover */
-.group:hover .group-hover\:scale-105 {
-    transform: scale(1.05);
+/* Estilos para los modales de vista previa */
+.fixed.inset-0 {
+z-index: 9999;
 }
 
-/* Estilos para mantener las mismas alturas */
-.swiper-slide {
-    height: auto;
+/* Añadir animación al abrir/cerrar vista previa */
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+
+@keyframes slideIn {
+from { transform: translateY(20px); opacity: 0; }
+to { transform: translateY(0); opacity: 1; }
+}
+
+.fixed.inset-0 {
+animation: fadeIn 0.3s ease-out;
+}
+
+.fixed.inset-0 > div {
+animation: slideIn 0.3s ease-out;
+}
+
+/* Estilos personalizados para los controles deslizantes de precio */
+input[type="range"] {
+-webkit-appearance: none;
+height: 6px;
+border-radius: 5px;
+background: #e5e7eb;
+outline: none;
+margin: 10px 0;
+}
+
+/* Estilo para el "thumb" (botón deslizante) en Chrome, Safari, Edge, Opera */
+input[type="range"]::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 18px;
+height: 18px;
+border-radius: 50%;
+background: #3b82f6;
+cursor: pointer;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+border: 2px solid white;
+transition: all 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover,
+input[type="range"]::-webkit-slider-thumb:active {
+background: #2563eb;
+transform: scale(1.1);
+}
+
+/* Estilo para el "thumb" en Firefox */
+input[type="range"]::-moz-range-thumb {
+width: 18px;
+height: 18px;
+border-radius: 50%;
+background: #3b82f6;
+cursor: pointer;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+border: 2px solid white;
+transition: all 0.2s ease;
+}
+
+input[type="range"]::-moz-range-thumb:hover,
+input[type="range"]::-moz-range-thumb:active {
+background: #2563eb;
+transform: scale(1.1);
+}
+
+/* Estilo para la pista en Firefox */
+input[type="range"]::-moz-range-progress {
+background: #3b82f6;
+border-radius: 5px;
+height: 6px;
+}
+
+/* Estilos para el color de fondo de la pista de rango para navegadores webkit */
+input[type="range"]::-webkit-slider-runnable-track {
+height: 6px;
+border-radius: 5px;
+}
+
+/* Aseguramos que el contenedor del filtro no tenga overflow */
+.bg-white.rounded-lg.shadow-sm {
+overflow: visible;
 }
