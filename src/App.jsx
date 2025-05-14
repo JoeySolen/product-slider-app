@@ -1,8 +1,27 @@
+import ProductSlider from './components/ProductSlider';
+
 function App() {
   return (
-    <div className="bg-blue-500 text-white p-4">
-      <h1 className="text-2xl font-bold">¡Hola desde React con Tailwind!</h1>
-      <p>Este es un texto de prueba.</p>
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+          <h1 className="text-2xl font-bold text-gray-900">E-Commerce Slider</h1>
+        </div>
+      </header>
+      
+      <main>
+        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+          <ProductSlider />
+        </div>
+      </main>
+      
+      <footer className="bg-white mt-8 border-t border-gray-200">
+        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-gray-500 text-sm">
+            © 2025 E-Commerce. Todos los derechos reservados.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
