@@ -13,15 +13,28 @@ const discountedPrice = product.discount > 0
 
 // Función para prevenir scroll cuando el modal está abierto
 useEffect(() => {
+    // Maneja el scroll del body
     if (showQuickView) {
     document.body.style.overflow = 'hidden';
+    
+    // Agrega event listener para la tecla Escape
+    const handleEscKey = (e) => {
+        if (e.key === 'Escape') {
+        setShowQuickView(false);
+        }
+    };
+    
+    // Agrega el listener
+    document.addEventListener('keydown', handleEscKey);
+    
+    // Limpia el listener al desmontar
+    return () => {
+        document.body.style.overflow = 'auto';
+        document.removeEventListener('keydown', handleEscKey);
+    };
     } else {
     document.body.style.overflow = 'auto';
     }
-
-    return () => {
-    document.body.style.overflow = 'auto';
-    };
 }, [showQuickView]);
 
 // Funciones para manejar las acciones de los botones
@@ -46,8 +59,16 @@ const QuickViewModal = () => {
     if (!showQuickView) return null;
     
     return createPortal(
-    <div className="fixed inset-0 modal-backdrop flex items-center justify-center z-[9999] p-4" style={{backgroundColor: 'rgba(0, 0, 0, 0.5)', backdropFilter: 'blur(5px)', WebkitBackdropFilter: 'blur(5px)'}}>
-        <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto" style={{animation: 'modal-appear 0.3s ease-out forwards'}}>
+    <div 
+        className="fixed inset-0 modal-backdrop flex items-center justify-center z-[9999] p-4" 
+        style={{backgroundColor: 'rgba(0, 0, 0, 0.5)', backdropFilter: 'blur(5px)', WebkitBackdropFilter: 'blur(5px)'}}
+        onClick={() => setShowQuickView(false)} // Cerrar al hacer clic en el backdrop
+    >
+        <div 
+        className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto" 
+        style={{animation: 'modal-appear 0.3s ease-out forwards'}}
+        onClick={(e) => e.stopPropagation()} // Evitar que los clics en el contenido cierren el modal
+        >
         <div className="relative p-6 bg-white rounded-lg">
             {/* Botón de cerrar */}
             <button 
@@ -152,6 +173,11 @@ const QuickViewModal = () => {
                 </div>
             </div>
             </div>
+        </div>
+        
+        {/* Instrucciones para cerrar el modal */}
+        <div className="mt-4 text-center text-xs text-gray-400">
+            Presiona ESC, haz clic fuera del contenido, o usa el botón X para cerrar
         </div>
         </div>
     </div>,
