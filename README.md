@@ -1,7 +1,7 @@
 # Slider de Productos Interactivo
 
 <div align="center">
-  <img src="public/favicon.svg" alt="Logo" width="100" height="100">
+  <img src="public/vite.svg" alt="Logo" width="100" height="100">
 </div>
 
 ## 📋 Descripción
