@@ -49,6 +49,40 @@ opacity: 0.5;
 opacity: 1;
 }
 
+/* Estilos para el título del slider */
+.bg-gray-50 h2 {
+position: relative;
+display: inline-block;
+transition: all 0.3s ease;
+}
+
+.bg-gray-50 h2::before {
+content: "";
+position: absolute;
+top: -8px;
+left: -12px;
+width: 30px;
+height: 30px;
+border-radius: 50%;
+background-color: rgba(59, 130, 246, 0.1);
+z-index: -1;
+transform: scale(0);
+transition: transform 0.3s ease;
+}
+
+.bg-gray-50:hover h2::before {
+transform: scale(3);
+}
+
+.bg-gray-50 h2 + span {
+opacity: 0.7;
+transition: opacity 0.3s ease;
+}
+
+.bg-gray-50:hover h2 + span {
+opacity: 1;
+}
+
 /* Ajustes para evitar problemas de altura en los slides */
 .swiper-slide {
 height: auto !important;

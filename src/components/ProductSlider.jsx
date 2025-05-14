@@ -88,6 +88,87 @@ const productsData = [
     discount: 0,
     rating: 4.9,
     isNew: false
+},
+// Nuevos productos
+{
+    id: 9,
+    name: "Laptop Ultradelgada",
+    price: 899.99,
+    category: "electrónica",
+    image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    discount: 8,
+    rating: 4.6,
+    isNew: true
+},
+{
+    id: 10,
+    name: "Tabla de Surf Profesional",
+    price: 349.99,
+    category: "deportes",
+    image: "https://images.unsplash.com/photo-1531722569936-825d3dd91b15?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    discount: 0,
+    rating: 4.5,
+    isNew: false
+},
+{
+    id: 11,
+    name: "Guitarra Acústica",
+    price: 259.99,
+    category: "música",
+    image: "https://images.unsplash.com/photo-1564186763535-ebb21ef5277f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    discount: 15,
+    rating: 4.7,
+    isNew: false
+},
+{
+    id: 12,
+    name: "Juego de Mesa Estrategia",
+    price: 49.99,
+    category: "juegos",
+    image: "https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    discount: 0,
+    rating: 4.8,
+    isNew: true
+},
+{
+    id: 13,
+    name: "Planta de Interior",
+    price: 24.99,
+    category: "hogar",
+    image: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    discount: 5,
+    rating: 4.3,
+    isNew: false
+},
+{
+    id: 14,
+    name: "Reloj de Pared Vintage",
+    price: 39.99,
+    category: "hogar",
+    image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    discount: 0,
+    rating: 4.2,
+    isNew: false
+},
+{
+    id: 15,
+    name: "Batería Electrónica",
+    price: 599.99,
+    category: "música",
+    image: "https://images.unsplash.com/photo-1543443258-92b04ad5ec6b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    discount: 10,
+    rating: 4.6,
+    isNew: true
+},
+{
+    id: 16,
+    name: "Lámpara de Diseño",
+    price: 79.99,
+    category: "hogar",
+    image: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    discount: 5,
+    rating: 4.6,
+    isNew: false
 }
 ];
 
@@ -144,8 +225,14 @@ const handleMaxPriceChange = (e) => {
 
 return (
     <div className="bg-gray-50 p-6 rounded-md">
-    <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-        <h2 className="text-2xl font-semibold text-gray-800">Productos Destacados</h2>
+    <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+        <div className="relative mb-4 md:mb-0">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 relative inline-block">
+            Productos Destacados
+            <span className="absolute bottom-0 left-0 w-1/2 h-1 bg-blue-500 rounded-full"></span>
+        </h2>
+        <span className="text-sm text-gray-500 ml-2 italic">Descubre lo mejor</span>
+        </div>
         
         <div className="flex flex-wrap gap-3 mt-4 md:mt-0 items-center">
         {/* Filtro de categorías */}
