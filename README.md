@@ -71,9 +71,11 @@ Este proyecto implementa un slider de productos interactivo para un e-commerce, 
 
 ## 🖼️ Capturas de pantalla
 
-![Slider de Productos]()
-![Vista previa de producto]()
-![Filtros aplicados]()
+![Vista en escritorio](./public/Vista%20escritorio.png)
+![Vista en móviles](./public/Vista%20móviles.png)
+![Slider de Productos](./public/Vista%20slider%20productos.png)
+![Vista previa de producto](./public/Vista%20previa%20de%20producto.png)
+![Filtros aplicados](./public/Vista%20filtros%20aplicados.png)
 
 ## 📝 Estructura del proyecto
 
