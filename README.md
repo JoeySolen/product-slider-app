@@ -31,7 +31,7 @@ Este proyecto implementa un slider de productos interactivo para un e-commerce, 
 
 1. Clona este repositorio
    ```bash
-   git clone https://github.com/tuusuario/slider-productos-interactivo.git
+   git clone https://github.com/JoeySolen/product-slider-app.git
    cd slider-productos-interactivo
    ```
 
