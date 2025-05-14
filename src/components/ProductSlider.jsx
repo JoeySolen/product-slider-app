@@ -166,7 +166,7 @@ return (
         {/* Botón de filtro de precio */}
         <button 
             onClick={() => setShowPriceFilter(!showPriceFilter)}
-            className={`ml-2 p-2 rounded-md transition-colors ${
+            className={`ml-2 p-2 rounded-md transition-colors duration-300 ${
             showPriceFilter 
             ? 'bg-blue-600 text-white' 
             : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -178,49 +178,71 @@ return (
         </div>
     </div>
 
-    {/* Filtro de precio MEJORADO - usando sliders individuales para min y max */}
-    {showPriceFilter && (
-        <div className="mb-6 p-5 bg-white rounded-lg shadow-sm">
-        <div className="mb-4 flex justify-between items-center">
-            <h3 className="font-medium text-gray-700">Filtrar por precio</h3>
-            <div className="flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-md">
-            <span className="text-sm font-medium text-gray-600">${minPriceFilter}</span>
-            <span className="text-sm text-gray-400">-</span>
-            <span className="text-sm font-medium text-gray-600">${maxPriceFilter}</span>
+    {/* Filtro de precio MEJORADO - con animación */}
+    <div className={`price-filter-container ${showPriceFilter ? 'price-filter-active' : 'price-filter-inactive'}`}>
+        <div className="price-filter-content mb-6 p-4 bg-white rounded-lg shadow-sm max-w-xl mx-auto">
+        <div className="mb-3 flex justify-between items-center">
+            <h3 className="text-sm font-medium text-gray-700">Filtrar por precio</h3>
+            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-md">
+                <span className="text-xs font-medium text-gray-600">${minPriceFilter}</span>
+                <span className="text-xs text-gray-400">-</span>
+                <span className="text-xs font-medium text-gray-600">${maxPriceFilter}</span>
+            </div>
+            <button 
+                onClick={() => {
+                setMinPriceFilter(minPrice);
+                setMaxPriceFilter(maxPrice);
+                }}
+                className="text-xs text-gray-500 hover:text-blue-600 transition-colors flex items-center gap-1"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Reset
+            </button>
             </div>
         </div>
         
-        {/* Slider para precio mínimo */}
-        <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600 mb-2">
-            Precio mínimo
-            </label>
+        <div className="grid grid-cols-1 gap-3">
+            {/* Slider para precio mínimo */}
+            <div>
+            <div className="flex justify-between items-center mb-1">
+                <label className="block text-xs font-medium text-gray-500">
+                Mínimo
+                </label>
+                <span className="text-xs text-gray-500">${minPriceFilter}</span>
+            </div>
             <input 
-            type="range" 
-            min={minPrice} 
-            max={maxPrice} 
-            value={minPriceFilter}
-            onChange={handleMinPriceChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                type="range" 
+                min={minPrice} 
+                max={maxPrice} 
+                value={minPriceFilter}
+                onChange={handleMinPriceChange}
+                className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
             />
-        </div>
-        
-        {/* Slider para precio máximo */}
-        <div>
-            <label className="block text-sm font-medium text-gray-600 mb-2">
-            Precio máximo
-            </label>
+            </div>
+            
+            {/* Slider para precio máximo */}
+            <div>
+            <div className="flex justify-between items-center mb-1">
+                <label className="block text-xs font-medium text-gray-500">
+                Máximo
+                </label>
+                <span className="text-xs text-gray-500">${maxPriceFilter}</span>
+            </div>
             <input 
-            type="range" 
-            min={minPrice} 
-            max={maxPrice} 
-            value={maxPriceFilter}
-            onChange={handleMaxPriceChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                type="range" 
+                min={minPrice} 
+                max={maxPrice} 
+                value={maxPriceFilter}
+                onChange={handleMaxPriceChange}
+                className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
             />
+            </div>
         </div>
         </div>
-    )}
+    </div>
 
     {/* Opción de autoplay */}
     <div className="mb-4 flex items-center">

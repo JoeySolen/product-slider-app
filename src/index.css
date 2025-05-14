@@ -1,10 +1,5 @@
 @import "tailwindcss";
 @import 'swiper/css';
-@tailwind utilities;
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* Importaciones necesarias para Swiper */
 @import 'swiper/css';
@@ -123,23 +118,23 @@ animation: slideIn 0.3s ease-out;
 /* Estilos personalizados para los controles deslizantes de precio */
 input[type="range"] {
 -webkit-appearance: none;
-height: 6px;
-border-radius: 5px;
+height: 4px;
+border-radius: 4px;
 background: #e5e7eb;
 outline: none;
-margin: 10px 0;
+margin: 8px 0;
 }
 
 /* Estilo para el "thumb" (botón deslizante) en Chrome, Safari, Edge, Opera */
 input[type="range"]::-webkit-slider-thumb {
 -webkit-appearance: none;
 appearance: none;
-width: 18px;
-height: 18px;
+width: 14px;
+height: 14px;
 border-radius: 50%;
 background: #3b82f6;
 cursor: pointer;
-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 border: 2px solid white;
 transition: all 0.2s ease;
 }
@@ -152,12 +147,12 @@ transform: scale(1.1);
 
 /* Estilo para el "thumb" en Firefox */
 input[type="range"]::-moz-range-thumb {
-width: 18px;
-height: 18px;
+width: 14px;
+height: 14px;
 border-radius: 50%;
 background: #3b82f6;
 cursor: pointer;
-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 border: 2px solid white;
 transition: all 0.2s ease;
 }
@@ -171,14 +166,14 @@ transform: scale(1.1);
 /* Estilo para la pista en Firefox */
 input[type="range"]::-moz-range-progress {
 background: #3b82f6;
-border-radius: 5px;
-height: 6px;
+border-radius: 4px;
+height: 4px;
 }
 
 /* Estilos para el color de fondo de la pista de rango para navegadores webkit */
 input[type="range"]::-webkit-slider-runnable-track {
-height: 6px;
-border-radius: 5px;
+height: 4px;
+border-radius: 4px;
 }
 
 /* Aseguramos que el contenedor del filtro no tenga overflow */
@@ -200,4 +195,75 @@ to {
 
 .animate-slideInUp {
 animation: slideInUp 0.3s ease-out forwards;
+}
+
+/* Animaciones para el filtro de precios */
+.price-filter-container {
+overflow: hidden;
+transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.price-filter-active {
+max-height: 200px;
+opacity: 1;
+transform: translateY(0);
+}
+
+.price-filter-inactive {
+max-height: 0;
+opacity: 0;
+transform: translateY(-10px);
+margin-bottom: 0;
+}
+
+.price-filter-content {
+transition: transform 0.3s ease, opacity 0.3s ease;
+transform-origin: top center;
+}
+
+/* Estilos para el header y footer */
+header {
+transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+header.scrolled {
+background-color: rgba(255, 255, 255, 0.95);
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+header svg {
+filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+footer a {
+position: relative;
+transition: color 0.3s ease;
+}
+
+footer a::after {
+content: '';
+position: absolute;
+bottom: -2px;
+left: 0;
+width: 0;
+height: 1px;
+background-color: #93c5fd;
+transition: width 0.3s ease;
+}
+
+footer a:hover::after {
+width: 100%;
+}
+
+/* Estilos para el botón de reset en el filtro de precios */
+.price-filter-content button {
+transition: all 0.2s ease;
+}
+
+.price-filter-content button:hover {
+transform: scale(1.05);
+}
+
+.price-filter-content button:active {
+transform: scale(0.95);
 }
